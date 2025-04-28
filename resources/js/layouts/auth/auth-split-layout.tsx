@@ -70,8 +70,9 @@ export default function AuthSplitLayout({ children, title, description }: PropsW
                 {/* Quote */}
                 {quote && (
                     <div className="relative z-20 mt-10 text-center">
-                        <p className="italic">&ldquo;{quote.message}&rdquo;</p>
-                        <p className="text-xs text-neutral-400 mt-1">— {quote.author}</p>
+                        {/* <p className="italic">&ldquo;{quote.message}&rdquo;</p>
+                        <p className="text-xs text-neutral-400 mt-1">— {quote.author}</p> */}
+                        <p className="text-xs text-neutral-400 mt-4">© 2025 Copyright by Ahmad Rizki - Artacomindo Jejaring Nusa</p>
                     </div>
                 )}
             </div>

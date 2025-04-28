@@ -10,7 +10,9 @@ import {
   Database, 
   Users, 
   FileText, 
-  Globe 
+  Globe,
+  Settings,
+  Shield
 } from 'lucide-react';
 import AppLogo from './app-logo';
 import React, { useState, useEffect } from 'react';
@@ -19,6 +21,7 @@ import React, { useState, useEffect } from 'react';
 type MenuState = {
   alfamartLawsonGroup: boolean;
   ftthGroup: boolean;
+  settingsGroup: boolean; // Menambahkan settingsGroup
 };
 
 export function AppSidebar() {
@@ -27,7 +30,8 @@ export function AppSidebar() {
   // Initial state with type annotation
   const [openMenus, setOpenMenus] = useState<MenuState>({
     alfamartLawsonGroup: url.includes('/dashboard/alfamart/'),
-    ftthGroup: url.includes('/dashboard/ftth/')
+    ftthGroup: url.includes('/dashboard/ftth/'),
+    settingsGroup: url.includes('/settings/') // Inisialisasi settingsGroup
   });
 
   // Type-safe toggle dropdown
@@ -49,7 +53,8 @@ export function AppSidebar() {
   useEffect(() => {
     setOpenMenus({
       alfamartLawsonGroup: url.includes('/dashboard/alfamart/'),
-      ftthGroup: url.includes('/dashboard/ftth/')
+      ftthGroup: url.includes('/dashboard/ftth/'),
+      settingsGroup: url.includes('/settings/') // Perbarui settingsGroup saat URL berubah
     });
   }, [url]);
 
@@ -64,6 +69,10 @@ export function AppSidebar() {
       { href: '/dashboard/ftth/data-pelanggan', label: 'Data Pelanggan', icon: FileText },
       { href: '/dashboard/ftth/layanan-paket', label: 'Layanan/Paket', icon: Globe },
       { href: '/dashboard/ftth/remote', label: 'Remote Site', icon: Server }
+    ],
+    settings: [
+      { href: '/settings/user-management', label: 'User Management', icon: Users },
+      { href: '/settings/role-management', label: 'Role Management', icon: Shield } // Tambahkan menu Role Management
     ]
   };
 
@@ -162,6 +171,47 @@ export function AppSidebar() {
             {openMenus.ftthGroup && (
               <div className="pl-6 mt-1 space-y-1">
                 {menuItems.ftth.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center rounded-md px-3 py-2 text-sm ${
+                      isMenuActive(item.href)
+                        ? 'bg-primary/10 text-primary font-medium'
+                        : 'hover:bg-muted'
+                    }`}
+                  >
+                    <item.icon className="mr-2 h-4 w-4" />
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Settings Group - Menambahkan bagian ini */}
+        <div className="space-y-1 px-3 py-2">
+          <h3 className="mb-2 px-4 text-sm font-semibold text-foreground/70">Pengaturan</h3>
+          <div>
+            <button
+              onClick={() => toggleDropdown('settingsGroup')}
+              className={`flex w-full items-center rounded-md px-3 py-2 text-sm hover:bg-muted ${
+                url.includes('/settings/')
+                  ? 'bg-primary/10 text-primary font-medium'
+                  : ''
+              }`}
+            >
+              <Settings className="mr-2 h-5 w-5" />
+              <span className="flex-grow">Pengaturan Sistem</span>
+              <ChevronDown 
+                className={`h-4 w-4 transform transition-transform duration-200 ${
+                  openMenus.settingsGroup ? 'rotate-180' : ''
+                }`} 
+              />
+            </button>
+            {openMenus.settingsGroup && (
+              <div className="pl-6 mt-1 space-y-1">
+                {menuItems.settings.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     // Jika pengguna sudah login, redirect ke dashboard
@@ -44,6 +46,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('FTTH/Customer');
         })->name('ftth.customer');
     });
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    // User Management Routes
+    Route::get('/settings/user-management', [UserController::class, 'index'])->name('user-management.index');
+    Route::post('/settings/user-management', [UserController::class, 'store'])->name('user-management.store');
+    Route::put('/settings/user-management/{user}', [UserController::class, 'update'])->name('user-management.update');
+    Route::delete('/settings/user-management/{user}', [UserController::class, 'destroy'])->name('user-management.destroy');
+
+    // Role Management Routes
+    Route::get('/settings/role-management', [RoleController::class, 'index'])->name('role-management.index');
+    Route::post('/settings/role-management', [RoleController::class, 'store'])->name('role-management.store');
+    Route::put('/settings/role-management/{role}', [RoleController::class, 'update'])->name('role-management.update');
+    Route::delete('/settings/role-management/{role}', [RoleController::class, 'destroy'])->name('role-management.destroy');
 });
 
 require __DIR__.'/settings.php';
